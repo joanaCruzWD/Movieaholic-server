@@ -101,7 +101,7 @@ router.post("/auth/login", async (req, res, next) => {
         email: foundUser.email,
         name: foundUser.name,
         role: foundUser.role, // 'admin' or 'user'
-        image: foundUser.image, 
+        image: foundUser.image,
       };
 
       // Create a JWT with the payload
@@ -114,7 +114,7 @@ router.post("/auth/login", async (req, res, next) => {
       // Send the response
       res.status(200).json({ authToken: authToken });
     } else if (!passwordCorrect) {
-      res.status(401).json({ message: "Unable to login the user" }); // Unathorized
+      res.status(401).json({ message: "Unable to login the user" }); // Unauthorized
     }
   } catch (error) {
     next(error);
