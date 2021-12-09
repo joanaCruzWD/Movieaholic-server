@@ -42,7 +42,6 @@ router.get('/api/movie/:movieId', isAuthenticated, async (req, res, next) => {
             voteAverage: details.vote_average,
             id: details.id,
             posterPath: details.poster_path,
-            budget: details.budget,
             overview: details.overview
         }
 
