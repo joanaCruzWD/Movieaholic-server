@@ -12,7 +12,7 @@ const saltRounds = 10;
 router.post("/auth/signup", async (req, res, next) => {
   try {
     // Get the data from req.body
-    const { email, password, name } = req.body;
+    const { email, password, name, image } = req.body;
 
     // Validate that values are not empty strings
     if (email === "" || password === "" || name === "") {
@@ -55,6 +55,7 @@ router.post("/auth/signup", async (req, res, next) => {
       email,
       password: hashedPassword,
       name,
+      image,
     });
 
     // We should never expose passwords publicly
