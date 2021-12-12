@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require('../models/movie.model');
+const Favorite = require('../models/favorite.model');
+
 const mongoose = require('mongoose');
 const axios = require('axios');
 const { isAuthenticated } = require("./../middleware/jwt.middleware");
@@ -36,7 +37,7 @@ router.get('/api/popularMovies', isAuthenticated, async (req, res, next) => {
 router.get('/api/movie/:movieId', isAuthenticated, async (req, res, next) => {
     try {
         const { movieId } = req.params;
-        console.log('movieId', movieId);
+
         const response = await axios.get(`${apiURL}/${movieId}${apiKey}`);
         const details = response.data;
 
@@ -62,7 +63,7 @@ router.get('/api/movies/search/:query', isAuthenticated, async (req, res, next) 
         const { query } = req.params;
         const response = await axios.get(`${searchURL}${query}`);
         const searchedMovieList = response.data;
-        console.log(searchedMovieList);
+
         const movies = searchedMovieList.results.map(movie => ({
             title: movie.title,
             voteAverage: movie.vote_average,
@@ -77,5 +78,65 @@ router.get('/api/movies/search/:query', isAuthenticated, async (req, res, next) 
     }
 })
 
+//POST /api/movie/favorite
+router.post('/api/movie/favorite', isAuthenticated, async (req, res, next) => {
+    try {
+        const { movieId } = req.body;
+        const userId = req.payload._id
+
+        //Check if there is already this movie in the favorites list
+        const foundedFavorite = await Favorite.findOne({ _id: movieId });
+
+        if (!foundedFavorite) {
+            await Favorite.create({
+                _id: movieId,
+                userId: userId,
+            })
+            res.status(201).json();
+        } else {
+            const checkedId = foundedFavorite.userId.find(id => id === userId)
+            if (!checkedId) {
+                await Favorite.findOneAndUpdate(
+                    { _id: movieId },
+                    { $push: { userId: userId } }
+                )
+                res.status(201).json();
+            } else {
+                res.status(400).json();
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+})
+
+//GET /api/movie/favorite
+router.get('/api/favorite', isAuthenticated, async (req, res, next) => {
+    try {
+        const userId = req.payload._id
+        const favoritesList = await Favorite.find({ userId: userId });
+        console.log(favoritesList);
+
+        const allFavorites = await Promise.all(favoritesList.map(async (favorite) => {
+            const response = await axios.get(`${apiURL}/${favorite._id}${apiKey}`);
+            const favoriteDetails = response.data;
+
+            return {
+                title: favoriteDetails.title,
+                voteAverage: favoriteDetails.vote_average,
+                id: favoriteDetails.id,
+                posterPath: favoriteDetails.poster_path,
+                overview: favoriteDetails.overview,
+                releaseDate: favoriteDetails.release_date,
+                popularity: favoriteDetails.popularity
+            }
+        }))
+        res.status(200).json(allFavorites);
+        console.log(allFavorites);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
 
 module.exports = router;
