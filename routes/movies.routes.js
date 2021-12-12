@@ -164,5 +164,33 @@ router.get('/api/favorite/:favoriteId', isAuthenticated, async (req, res, next) 
     }
 })
 
+//DELETE /api/movie/favorite/:favoriteId
+router.delete('/api/favorite/:favoriteId', isAuthenticated, async (req, res, next) => {
+    try {
+
+        const { favoriteId } = req.params;
+        const userId = req.payload._id
+        //Check if there is already this movie in the favorites list
+        const foundedFavorite = await Favorite.findOne({ _id: favoriteId });
+        if (!foundedFavorite) {
+            res.status(404).json();
+        } else {
+            const checkedId = foundedFavorite.userId.find(id => id === userId)
+            if (checkedId) {
+                await Favorite.findOneAndUpdate(
+                    { _id: favoriteId },
+                    { $pull: { userId: userId } }
+                )
+                res.status(201).json();
+            } else {
+                res.status(400).json();
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+})
+
 
 module.exports = router;
