@@ -139,4 +139,30 @@ router.get('/api/favorite', isAuthenticated, async (req, res, next) => {
     }
 })
 
+//GET /favorite/movieDetails/:moviesId
+router.get('/api/favorite/:favoriteId', isAuthenticated, async (req, res, next) => {
+    try {
+        const { favoriteId } = req.params;
+
+        const response = await axios.get(`${apiURL}/${favoriteId}${apiKey}`);
+        const detailFavorite = response.data;
+
+        const favoriteMovieDetails = {
+            title: detailFavorite.title,
+            voteAverage: detailFavorite.vote_average,
+            id: detailFavorite.id,
+            posterPath: detailFavorite.poster_path,
+            overview: detailFavorite.overview,
+            releaseDate: detailFavorite.release_date,
+            popularity: detailFavorite.popularity
+        }
+        console.log('favoriteMovieDetails', favoriteMovieDetails);
+        res.status(200).json(favoriteMovieDetails);
+
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
+
 module.exports = router;
