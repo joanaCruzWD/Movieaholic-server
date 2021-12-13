@@ -27,9 +27,8 @@ app.use("/", moviesRoutes);
 const userRoutes = require("./routes/user.routes");
 app.use("/", userRoutes);
 
-const moviesRouter = require('./routes/movies.routes');
-app.use('/api', moviesRouter);
-
+const commentsRouter = require('./routes/comment.routes');
+app.use('/', commentsRouter);
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

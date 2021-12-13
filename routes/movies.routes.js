@@ -156,9 +156,7 @@ router.get('/api/favorite/:favoriteId', isAuthenticated, async (req, res, next) 
             releaseDate: detailFavorite.release_date,
             popularity: detailFavorite.popularity
         }
-        console.log('favoriteMovieDetails', favoriteMovieDetails);
         res.status(200).json(favoriteMovieDetails);
-
     } catch (error) {
         res.status(500).json(error);
     }
