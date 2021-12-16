@@ -10,6 +10,7 @@ const saltRounds = 10;
 
 // POST /auth/signup
 router.post("/auth/signup", async (req, res, next) => {
+  b
   try {
     // Get the data from req.body
     const { email, password, name, image } = req.body;

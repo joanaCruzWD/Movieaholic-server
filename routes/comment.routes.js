@@ -34,7 +34,7 @@ router.get('/api/favorite/:favoriteId/comments', isAuthenticated, async (req, re
     }
 })
 
-// POST /api/favorite/:favoriteId/comments  - Get current favorite comments
+// POST /api/favorite/:favoriteId/comments 
 router.post('/api/favorite/:favoriteId/comments', isAuthenticated, async (req, res, next) => {
     try {
         const userId = req.payload._id;
@@ -50,7 +50,7 @@ router.post('/api/favorite/:favoriteId/comments', isAuthenticated, async (req, r
     }
 })
 
-// PUT /api/favorite/:favoriteId/:commentId  - Get current favorite comments
+// PUT /api/favorite/:favoriteId/:commentId  
 router.put('/api/favorite/:favoriteId/:commentId', isAuthenticated, async (req, res, next) => {
     try {
 
@@ -70,7 +70,7 @@ router.put('/api/favorite/:favoriteId/:commentId', isAuthenticated, async (req, 
     }
 })
 
-// DELETE /api/favorite/:favoriteId/:commentId  - Get current favorite comments
+// DELETE /api/favorite/:favoriteId/:commentId  
 router.delete('/api/favorite/:favoriteId/:commentId', isAuthenticated, async (req, res, next) => {
     try {
 
