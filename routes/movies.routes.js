@@ -24,7 +24,8 @@ router.get('/api/popularMovies', isAuthenticated, async (req, res, next) => {
             id: movie.id,
             posterPath: movie.poster_path,
             releaseDate: movie.release_date,
-            popularity: movie.popularity
+            popularity: movie.popularity,
+            runtime: movie.runtime
         }))
 
         res.status(200).json(movies);
@@ -48,7 +49,8 @@ router.get('/api/movie/:movieId', isAuthenticated, async (req, res, next) => {
             posterPath: details.poster_path,
             overview: details.overview,
             releaseDate: details.release_date,
-            popularity: details.popularity
+            popularity: details.popularity,
+            runtime: details.runtime
         }
 
         res.status(200).json(movieDetails);
@@ -129,7 +131,8 @@ router.get('/api/favorite', isAuthenticated, async (req, res, next) => {
                 posterPath: favoriteDetails.poster_path,
                 overview: favoriteDetails.overview,
                 releaseDate: favoriteDetails.release_date,
-                popularity: favoriteDetails.popularity
+                popularity: favoriteDetails.popularity,
+                runtime: favoriteDetails.runtime
             }
         }))
         res.status(200).json(allFavorites);
@@ -154,7 +157,8 @@ router.get('/api/favorite/:favoriteId', isAuthenticated, async (req, res, next) 
             posterPath: detailFavorite.poster_path,
             overview: detailFavorite.overview,
             releaseDate: detailFavorite.release_date,
-            popularity: detailFavorite.popularity
+            popularity: detailFavorite.popularity,
+            runtime: detailFavorite.runtime,
         }
         res.status(200).json(favoriteMovieDetails);
     } catch (error) {
