@@ -22,8 +22,10 @@ router.post("/auth/signup", async (req, res, next) => {
 
     // Validate email and password format
     // Use regex to validate the email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    if (!emailRegex.test(email)) {
+
+    //const emailRegex = /.+\@.+\..+/;
+    //   if(!emailRegex.test(email))
+    if (!email.includes("@")) {
       res.status(400).json({ message: "Provide a valid email address." });
       return;
     }
@@ -41,7 +43,7 @@ router.post("/auth/signup", async (req, res, next) => {
     // Check if email is not taken
     const foundUser = await User.findOne({ email });
     if (foundUser) {
-      res.status(400).json({ message: "Provide a valid email" });
+      res.status(400).json({ message: "Email already in use" });
       return;
     }
 
@@ -67,6 +69,7 @@ router.post("/auth/signup", async (req, res, next) => {
     // Send the response back
     res.status(201).json({ user: user });
   } catch (error) {
+    console.log("e", error);
     next(error);
   }
 });

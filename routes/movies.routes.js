@@ -13,7 +13,7 @@ const searchURL = `https://api.themoviedb.org/3/search/movie${apiKey}&query=`
 
 
 //GET /popularMovies
-router.get('/api/popularMovies', isAuthenticated, async (req, res, next) => {
+router.get('/api/popularMovies', async (req, res, next) => {
     try {
         const response = await axios.get(`${getPopularURL}`);
         const moviesList = response.data;
@@ -35,7 +35,7 @@ router.get('/api/popularMovies', isAuthenticated, async (req, res, next) => {
 })
 
 //GET /myMoviesList/:moviesId
-router.get('/api/movie/:movieId', isAuthenticated, async (req, res, next) => {
+router.get('/api/movie/:movieId', async (req, res, next) => {
     try {
         const { movieId } = req.params;
 
@@ -60,7 +60,7 @@ router.get('/api/movie/:movieId', isAuthenticated, async (req, res, next) => {
 })
 
 //GET /api/movies/search/:query
-router.get('/api/movies/search/:query', isAuthenticated, async (req, res, next) => {
+router.get('/api/movies/search/:query', async (req, res, next) => {
     try {
         const { query } = req.params;
         const response = await axios.get(`${searchURL}${query}`);
